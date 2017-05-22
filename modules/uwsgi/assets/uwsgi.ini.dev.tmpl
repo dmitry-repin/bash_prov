@@ -1,0 +1,21 @@
+[uwsgi]
+uid = ${WWW_USER}
+gid = ${WWW_GROUP}
+virtualenv = ${PROJECT_VE_PATH}
+chdir = ${PROJECT_PATH}
+module = ${PROJECT_NAME}.wsgi:application
+master = True
+pidfile = /run/uwsgi/${PROJECT_NAME}.pid
+vacuum = True
+max-requests = 5000
+logto = /var/log/${PROJECT_NAME}/uwsgi.log
+env = DJANGO_SETTINGS_MODULE=${PROJECT_NAME}.settings
+socket = /run/uwsgi/${PROJECT_NAME}.sock
+processes = %k
+harakiri = 60
+post-buffering = 1048576
+buffer-size = 65535
+vacuum
+py-auto-reload = 3
+stats = /run/uwsgi/${PROJECT_NAME}.stats.sock
+memory-report

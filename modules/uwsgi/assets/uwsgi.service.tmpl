@@ -1,0 +1,14 @@
+[Unit]
+Description=uWSGI ${PROJECT_NAME} service
+
+[Service]
+ExecStartPre=/bin/bash -c 'mkdir -p /var/log/${PROJECT_NAME}; touch /var/log/${PROJECT_NAME}/uwsgi.log; touch /var/log/${PROJECT_NAME}/django.log; chown -R ${WWW_USER}:${WWW_GROUP} /var/log/${PROJECT_NAME}; mkdir -p /run/uwsgi; chown -R ${WWW_USER}:${WWW_GROUP} /run/uwsgi'
+ExecStart=${PROJECT_VE_PATH}/bin/uwsgi --ini /etc/uwsgi/${PROJECT_NAME}.ini
+ExecStopPost=/bin/bash -c 'rm -f /run/uwsgi/${PROJECT_NAME}.sock; rm -f /run/uwsgi/${PROJECT_NAME}.pid'
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
